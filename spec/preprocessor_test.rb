@@ -57,4 +57,23 @@ class PreprocessorTest < Minitest::Test
 
     assert_equal expected, @p.word_to_binary('abc')
   end
+
+  def test_calculates_padding_length_for_binary_string
+    binary_string = '011000010110001001100011'
+
+    assert_equal 423, @p.padding_length(binary_string)
+  end
+
+  def test_calculates_padding_length_for_different_binary_string
+    binary_string = '0110000101100010'
+
+    assert_equal 431, @p.padding_length(binary_string)
+  end
+
+  def test_pads_message
+    message = 'abc'
+    expected = '011000010110001001100011' + '1' + ('0' * 423)
+
+    assert_equal expected, @p.pad_message(message)
+  end
 end
