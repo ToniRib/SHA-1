@@ -99,4 +99,19 @@ class PreprocessorTest < Minitest::Test
     assert_equal expected, @p.final_padding(message)
     assert_equal 512, @p.final_padding(message).length
   end
+
+  def test_parses_512_bit_message_into_one_array
+    message = '011000010110001001100011' + '1' + ('0' * 423) + ('0' * 56) + '00011000'
+    expected = [message]
+
+    assert_equal expected, @p.parse_message(message)
+  end
+
+  def test_parses_1024_bit_message_into_one_array
+    message = '011000010110001001100011' + '1' + ('0' * 423) + ('0' * 56) + '00011000'
+    double_message = message * 2
+    expected = [message, message]
+
+    assert_equal expected, @p.parse_message(double_message)
+  end
 end

@@ -26,9 +26,10 @@ class Preprocessor
   def final_padding(message)
     pad_message(message) + ('0' * extra_pad(message)) + byte_to_binary(word_to_binary(message).length)
   end
+
+  def parse_message(message)
+    message.chars.each_slice(512).to_a.map do |msg|
+      msg.join
+    end
+  end
 end
-
-# byte_to_binary(97)
-# word_to_binary('abc')
-
-# 448 % 512
