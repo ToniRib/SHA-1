@@ -114,4 +114,10 @@ class PreprocessorTest < Minitest::Test
 
     assert_equal expected, @p.parse_message(double_message)
   end
+
+  def test_initial_hash
+    expected = ['67452301', 'efcdab89', '98badcfe', '10325476', 'c3d2e1f0']
+
+    assert_equal expected, @p.initial_hash
+  end
 end

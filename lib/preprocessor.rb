@@ -32,4 +32,13 @@ class Preprocessor
       msg.join
     end
   end
+
+  def initial_hash
+    h0 = '67452301'
+    h1 = 'efcdab89'
+    h2 = '98badcfe'
+    h3 = '10325476'
+    h4 = 'c3d2e1f0'
+    [h0, h1, h2, h3, h4]
+  end
 end
