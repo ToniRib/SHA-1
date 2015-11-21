@@ -18,6 +18,12 @@ class PreprocessorTest < Minitest::Test
     assert_equal expected, @p.byte_to_binary(65)
   end
 
+  def test_converts_ascii_number_24_to_binary
+    expected = '00011000'
+
+    assert_equal expected, @p.byte_to_binary(24)
+  end
+
   def test_converts_ascii_number_0_to_binary
     expected = '00000000'
 
@@ -75,5 +81,22 @@ class PreprocessorTest < Minitest::Test
     expected = '011000010110001001100011' + '1' + ('0' * 423)
 
     assert_equal expected, @p.pad_message(message)
+    assert_equal 448, @p.pad_message(message).length
+  end
+
+  def test_pads_different_message
+    message = 'a'
+    expected = '01100001' + '1' + ('0' * 439)
+
+    assert_equal expected, @p.pad_message(message)
+    assert_equal 448, @p.pad_message(message).length
+  end
+
+  def test_final_padding_for_abc
+    message = 'abc'
+    expected = '011000010110001001100011' + '1' + ('0' * 423) + ('0' * 56) + '00011000'
+
+    assert_equal expected, @p.final_padding(message)
+    assert_equal 512, @p.final_padding(message).length
   end
 end
