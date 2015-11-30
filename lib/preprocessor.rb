@@ -1,3 +1,5 @@
+require 'pry'
+
 class Preprocessor
   def byte_to_binary(byte)
     byte.to_s(2).rjust(8, '0')
@@ -11,6 +13,16 @@ class Preprocessor
 
   def number_of_blocks(message)
     ((word_to_binary(message).length + 1 + 64) / 512.0).ceil
+  end
+
+  def zero_string(num_blocks)
+    '0' * 512 * num_blocks
+  end
+
+  def add_message_and_one_bit(message)
+    b = number_of_blocks(message)
+    message_string = zero_string(b).prepend(word_to_binary(message) + '1')
+    message_string.slice(0, b * 512)
   end
 
   # def padding_length(binary_str)

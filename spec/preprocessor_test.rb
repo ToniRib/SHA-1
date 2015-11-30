@@ -78,6 +78,25 @@ class PreprocessorTest < Minitest::Test
     expected = '0' * 512
 
     assert_equal expected, @p.zero_string(1)
+    assert_equal expected * 2, @p.zero_string(2)
+  end
+
+  def test_adds_message_and_one_bit_to_front_of_zero_string_for_short_message
+    message = 'abc'
+
+    zeros = '0' * 487
+    expected = '011000010110001001100011' + '1' + zeros
+
+    assert_equal expected, @p.add_message_and_one_bit(message)
+  end
+
+  def test_adds_message_and_one_bit_to_front_of_zero_string_for_long_message
+    message = 'abc' * 20
+
+    zeros = '0' * 543
+    expected = '011000010110001001100011' * 20 + '1' + zeros
+
+    assert_equal expected, @p.add_message_and_one_bit(message)
   end
 
   # def test_calculates_padding_length_for_binary_string
