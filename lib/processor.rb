@@ -7,10 +7,10 @@ class Processor
 
   def bitwise_exclusive_or(arr)
     return arr.shift if arr.length == 1
-    # need to totally rework this
-    # '0' + (arr[0].to_i(2) ^ arr[1].to_i(2) ^ arr[2].to_i(2) ^ arr[3].to_i(2)).to_s(2)
 
     left = arr.shift
     right = bitwise_exclusive_or(arr)
+
+    (left.to_i(2) ^ right.to_i(2)).to_s(2).rjust(left.length, '0')
   end
 end
