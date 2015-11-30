@@ -99,57 +99,40 @@ class PreprocessorTest < Minitest::Test
     assert_equal expected, @p.add_message_and_one_bit(message)
   end
 
-  # def test_calculates_padding_length_for_binary_string
-  #   binary_string = '011000010110001001100011'
-  #
-  #   assert_equal 423, @p.padding_length(binary_string)
-  # end
-  #
-  # def test_calculates_padding_length_for_different_binary_string
-  #   binary_string = '0110000101100010'
-  #
-  #   assert_equal 431, @p.padding_length(binary_string)
-  # end
-  #
-  # def test_pads_message
-  #   message = 'abc'
-  #   expected = '011000010110001001100011' + '1' + ('0' * 423)
-  #
-  #   assert_equal expected, @p.pad_message(message)
-  #   assert_equal 448, @p.pad_message(message).length
-  # end
-  #
-  # def test_pads_different_message
-  #   message = 'a'
-  #   expected = '01100001' + '1' + ('0' * 439)
-  #
-  #   assert_equal expected, @p.pad_message(message)
-  #   assert_equal 448, @p.pad_message(message).length
-  # end
-  #
-  # def test_final_padding_for_abc
-  #   message = 'abc'
-  #   expected = '011000010110001001100011' + '1' + ('0' * 423) + ('0' * 56) + '00011000'
-  #
-  #   assert_equal expected, @p.final_padding(message)
-  #   assert_equal 512, @p.final_padding(message).length
-  # end
-  #
-  # def test_parses_512_bit_message_into_one_array
-  #   message = '011000010110001001100011' + '1' + ('0' * 423) + ('0' * 56) + '00011000'
-  #   expected = [message]
-  #
-  #   assert_equal expected, @p.parse_message(message)
-  # end
-  #
-  # def test_parses_1024_bit_message_into_one_array
-  #   message = '011000010110001001100011' + '1' + ('0' * 423) + ('0' * 56) + '00011000'
-  #   double_message = message * 2
-  #   expected = [message, message]
-  #
-  #   assert_equal expected, @p.parse_message(double_message)
-  # end
-  #
+  def test_encodes_message_length_as_sixty_four_bit_string
+    message = 'abc'
+    expected = ('0' * 56) + '00011000'
+
+    assert_equal expected, @p.sixty_four_bit_encoded_message_length(message)
+  end
+
+  def test_encodes_long_message_length_as_sixty_four_bit_string
+    message = 'abcde' * 20
+    expected = ('0' * 54) + '1100100000'
+
+    assert_equal expected, @p.sixty_four_bit_encoded_message_length(message)
+  end
+
+  def test_adds_length_as_64_bit_encoded_to_end_of_string_for_short_message
+    message = 'abc'
+
+    binary_length = ('0' * 56) + '00011000'
+    zeros = '0' * 423
+    expected = '011000010110001001100011' + '1' + zeros + binary_length
+
+    assert_equal expected, @p.preprocess(message)
+  end
+
+  def test_adds_length_as_64_bit_encoded_to_end_of_string_for_long_message
+    message = 'abcde' * 20
+
+    binary_length = ('0' * 54) + '1100100000'
+    zeros = '0' * 159
+    expected = '0110000101100010011000110110010001100101' * 20 + '1' + zeros + binary_length
+
+    assert_equal expected, @p.preprocess(message)
+  end
+
   def test_initial_hash
     expected = ['67452301', 'efcdab89', '98badcfe', '10325476', 'c3d2e1f0']
 
