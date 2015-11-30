@@ -132,6 +132,9 @@ class ProcessorTest < Minitest::Test
       "t79" => "11101110101011001100100000110010"
     }
 
+    t16 = '00001010000011100000010000001100'
+
     assert_equal message_schedule, @p.generate_schedule(message)
+    assert_equal t16, @p.generate_schedule(message)['t16']
   end
 end
