@@ -28,4 +28,13 @@ class ProcessorTest < Minitest::Test
 
     assert_equal '0101', @p.bitwise_exclusive_or([str1, str2, str3, str4])
   end
+
+  def test_performs_bitwise_exclusive_or_on_four_long_binary_strings
+    str1 = '000100101'
+    str2 = '001110000'
+    str3 = '011111011'
+    str4 = '000010000'
+
+    assert_equal '010111110', @p.bitwise_exclusive_or([str1, str2, str3, str4])
+  end
 end
