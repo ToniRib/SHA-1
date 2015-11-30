@@ -42,12 +42,16 @@ class Preprocessor
     divide_into_512_bit_slices(binary_message)
   end
 
+  def hex_to_binary(hex_string)
+    hex_string.hex.to_s(2).rjust(hex_string.size * 4, '0')
+  end
+
   def initial_hash
-    h0 = '67452301'
-    h1 = 'efcdab89'
-    h2 = '98badcfe'
-    h3 = '10325476'
-    h4 = 'c3d2e1f0'
+    h0 = hex_to_binary('67452301')
+    h1 = hex_to_binary('efcdab89')
+    h2 = hex_to_binary('98badcfe')
+    h3 = hex_to_binary('10325476')
+    h4 = hex_to_binary('c3d2e1f0')
     [h0, h1, h2, h3, h4]
   end
 end

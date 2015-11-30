@@ -147,8 +147,8 @@ class PreprocessorTest < Minitest::Test
     assert_equal 1024, @p.preprocess(message).join.length
   end
 
-  def test_initial_hash
-    expected = ['67452301', 'efcdab89', '98badcfe', '10325476', 'c3d2e1f0']
+  def test_creates_initial_hash_in_binary
+    expected = ["01100111010001010010001100000001", "11101111110011011010101110001001", "10011000101110101101110011111110", "00010000001100100101010001110110", "11000011110100101110000111110000"]
 
     assert_equal expected, @p.initial_hash
   end
