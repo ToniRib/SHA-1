@@ -121,6 +121,7 @@ class PreprocessorTest < Minitest::Test
     expected = '011000010110001001100011' + '1' + zeros + binary_length
 
     assert_equal expected, @p.preprocess(message)
+    assert_equal 512, @p.preprocess(message).length
   end
 
   def test_adds_length_as_64_bit_encoded_to_end_of_string_for_long_message
@@ -131,6 +132,7 @@ class PreprocessorTest < Minitest::Test
     expected = '0110000101100010011000110110010001100101' * 20 + '1' + zeros + binary_length
 
     assert_equal expected, @p.preprocess(message)
+    assert_equal 1024, @p.preprocess(message).length
   end
 
   def test_initial_hash
