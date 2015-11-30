@@ -140,6 +140,7 @@ class ProcessorTest < Minitest::Test
 
   def test_working_vars_initialize_as_initial_hash
     expected = {
+      T: nil,
       a: "01100111010001010010001100000001",
       b: "11101111110011011010101110001001",
       c: "10011000101110101101110011111110",

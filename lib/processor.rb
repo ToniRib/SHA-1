@@ -36,6 +36,7 @@ class Processor
     pre = Preprocessor.new
 
     {
+      T: nil,
       a: pre.initial_hash[0],
       b: pre.initial_hash[1],
       c: pre.initial_hash[2],
