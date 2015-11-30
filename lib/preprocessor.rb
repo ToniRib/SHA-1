@@ -9,29 +9,33 @@ class Preprocessor
     bin
   end
 
-  def padding_length(binary_str)
-    # how to do smallest, non-negative?
-    (448 % 512) - (binary_str.length + 1)
+  def number_of_blocks(message)
+    ((word_to_binary(message).length + 1 + 64) / 512.0).ceil
   end
 
-  def extra_pad(message)
-    512 - pad_message(message).length - 8
-  end
-
-  def pad_message(message)
-    word_to_binary(message) + '1' +
-      ('0' * padding_length(word_to_binary(message)))
-  end
-
-  def final_padding(message)
-    pad_message(message) + ('0' * extra_pad(message)) + byte_to_binary(word_to_binary(message).length)
-  end
-
-  def parse_message(message)
-    message.chars.each_slice(512).to_a.map do |msg|
-      msg.join
-    end
-  end
+  # def padding_length(binary_str)
+  #   # how to do smallest, non-negative?
+  #   (448 % 512) - (binary_str.length + 1)
+  # end
+  #
+  # def extra_pad(message)
+  #   512 - pad_message(message).length - 8
+  # end
+  #
+  # def pad_message(message)
+  #   word_to_binary(message) + '1' +
+  #     ('0' * padding_length(word_to_binary(message)))
+  # end
+  #
+  # def final_padding(message)
+  #   pad_message(message) + ('0' * extra_pad(message)) + byte_to_binary(word_to_binary(message).length)
+  # end
+  #
+  # def parse_message(message)
+  #   message.chars.each_slice(512).to_a.map do |msg|
+  #     msg.join
+  #   end
+  # end
 
   def initial_hash
     h0 = '67452301'
