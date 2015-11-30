@@ -25,11 +25,6 @@ class Preprocessor
     message_string.slice(0, b * 512)
   end
 
-  def preprocess(message)
-    l = sixty_four_bit_encoded_message_length(message)
-    add_message_and_one_bit(message)[0..-65] + l
-  end
-
   def sixty_four_bit_encoded_message_length(message)
     l = byte_to_binary(message.length * 8)
     '0' * (64 - l.length) + l
@@ -39,6 +34,12 @@ class Preprocessor
     binary.chars.each_slice(512).to_a.map do |msg|
       msg.join
     end
+  end
+
+  def preprocess(message)
+    l = sixty_four_bit_encoded_message_length(message)
+    binary_message = add_message_and_one_bit(message)[0..-65] + l
+    divide_into_512_bit_slices(binary_message)
   end
 
   def initial_hash
