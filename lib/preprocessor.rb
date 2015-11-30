@@ -35,6 +35,12 @@ class Preprocessor
     '0' * (64 - l.length) + l
   end
 
+  def divide_into_512_bit_slices(binary)
+    binary.chars.each_slice(512).to_a.map do |msg|
+      msg.join
+    end
+  end
+
   def initial_hash
     h0 = '67452301'
     h1 = 'efcdab89'
