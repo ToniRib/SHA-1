@@ -137,4 +137,16 @@ class ProcessorTest < Minitest::Test
     assert_equal message_schedule, @p.generate_schedule(message)
     assert_equal t16, @p.generate_schedule(message)['t16']
   end
+
+  def test_working_vars_initialize_as_initial_hash
+    expected = {
+      a: "01100111010001010010001100000001",
+      b: "11101111110011011010101110001001",
+      c: "10011000101110101101110011111110",
+      d: "00010000001100100101010001110110",
+      e: "11000011110100101110000111110000"
+    }
+
+    assert_equal expected, @p.initialize_working_vars
+  end
 end

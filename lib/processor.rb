@@ -1,4 +1,5 @@
 require 'pry'
+require_relative 'preprocessor'
 
 class Processor
   def circular_left_shift(binary, n)
@@ -29,5 +30,17 @@ class Processor
     end
 
     schedule
+  end
+
+  def initialize_working_vars
+    pre = Preprocessor.new
+
+    {
+      a: pre.initial_hash[0],
+      b: pre.initial_hash[1],
+      c: pre.initial_hash[2],
+      d: pre.initial_hash[3],
+      e: pre.initial_hash[4]
+    }
   end
 end
