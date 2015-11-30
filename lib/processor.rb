@@ -16,6 +16,7 @@ class Processor
   end
 
   def generate_schedule(message)
+    # update for one block only
     schedule = {}
 
     message.each do |block|
@@ -44,4 +45,22 @@ class Processor
       e: pre.initial_hash[4]
     }
   end
+
+  def process(message)
+    message.each_with_index do |block, index|
+      schedule = generate_schedule(block)
+
+      if index == 0
+        working_vars = initialize_working_vars
+      else
+        working_vars = update_working_vars
+      end
+
+      hash = compute_intermediate_hash # need to figure this out
+    end
+
+    message_digest #something here
+  end
+
+  # write the crazy sha-1 function
 end
