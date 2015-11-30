@@ -20,7 +20,12 @@ class ProcessorTest < Minitest::Test
     assert_equal expected, @p.circular_left_shift(str, 3)
   end
 
-  def test_performs_bitwise_exclusive_or_on_two_binary_strings
-    
+  def test_performs_bitwise_exclusive_or_on_four_binary_strings
+    str1 = '0001'
+    str2 = '0011'
+    str3 = '0111'
+    str4 = '0000'
+
+    assert_equal '0101', @p.bitwise_exclusive_or([str1, str2, str3, str4])
   end
 end
