@@ -27,8 +27,14 @@ class Processor
     complement = binary.chars.map do |n|
       n.to_i == 0 ? 1 : 0
     end
-    
+
     complement.join
+  end
+
+  def ch_function(x, y, z)
+    x_complement_and_z = bitwise_and(bitwise_complement(x), z)
+    x_and_y = bitwise_and(x, y)
+    bitwise_exclusive_or([x_complement_and_z, x_and_y])
   end
 
   def pad_exclusive_or(left, right)

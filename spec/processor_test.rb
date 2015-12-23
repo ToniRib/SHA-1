@@ -172,4 +172,24 @@ class ProcessorTest < Minitest::Test
 
     assert_equal expected, @p.initialize_working_vars
   end
+
+  def test_computes_ch_function_for_three_short_variables
+    b = "11101111"
+    c = "10011000"
+    d = "00010000"
+
+    expected = '10011000'
+
+    assert_equal expected, @p.ch_function(b, c, d)
+  end
+
+  def test_computes_ch_function_for_three_variables
+    b = "11101111110011011010101110001001"
+    c = "10011000101110101101110011111110"
+    d = "00010000001100100101010001110110"
+
+    expected = '10011000101110101101110011111110'
+
+    assert_equal expected, @p.ch_function(b, c, d)
+  end
 end
