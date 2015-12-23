@@ -37,6 +37,10 @@ class Processor
     bitwise_exclusive_or([x_complement_and_z, x_and_y])
   end
 
+  def parity_function(x, y, z)
+    bitwise_exclusive_or([x, y, z])
+  end
+
   def pad_exclusive_or(left, right)
     (left.to_i(2) ^ right.to_i(2)).to_s(2).rjust(left.length, '0')
   end
