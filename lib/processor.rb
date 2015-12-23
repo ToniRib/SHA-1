@@ -12,25 +12,42 @@ class Processor
     left = arr.shift
     right = bitwise_exclusive_or(arr)
 
+    pad_exclusive_or(left, right)
+  end
+
+  def pad_exclusive_or(left, right)
     (left.to_i(2) ^ right.to_i(2)).to_s(2).rjust(left.length, '0')
   end
 
-  def generate_schedule(message)
-    # update for one block only
+  def generate_schedule(block)
     schedule = {}
 
-    message.each do |block|
-      80.times do |i|
-
-        if i < 16
-          schedule['t' + i.to_s] = block.chars.each_slice(32).to_a[i].join
-        else
-          schedule['t' + i.to_s] = circular_left_shift(bitwise_exclusive_or([schedule['t' + (i - 3).to_s], schedule['t' + (i - 8).to_s], schedule['t' + (i - 14).to_s], schedule['t' + (i - 16).to_s]]), 1)
-        end
+    80.times do |i|
+      if i < 16
+        schedule['t' + i.to_s] = insert_sixteen_bits_of_message(block, i)
+      else
+        schedule['t' + i.to_s] = perform_xor_and_rotate_left_once(schedule, i)
       end
     end
 
     schedule
+  end
+
+  def insert_sixteen_bits_of_message(block, i)
+    block.chars.each_slice(32).to_a[i].join
+  end
+
+  def gather_previous_message_schedule_words(schedule, i)
+    [schedule['t' + (i - 3).to_s],
+     schedule['t' + (i - 8).to_s],
+     schedule['t' + (i - 14).to_s],
+     schedule['t' + (i - 16).to_s]]
+  end
+
+  def perform_xor_and_rotate_left_once(schedule, i)
+    words = gather_previous_message_schedule_words(schedule, i)
+    bitwise_xor = bitwise_exclusive_or(words)
+    circular_left_shift(bitwise_xor, 1)
   end
 
   def initialize_working_vars
