@@ -232,4 +232,67 @@ class ProcessorTest < Minitest::Test
 
     assert_equal expected, @p.maj_function(b, c, d)
   end
+
+  def test_computes_sha_1_function_for_t_less_than_19
+    x = "11101111110011011010101110001001"
+    y = "10011000101110101101110011111110"
+    z = "00010000001100100101010001110110"
+
+    expected = "10011000101110101101110011111110"
+
+    0.upto(19) do |t|
+      assert_equal expected, @p.sha_1_function(x, y, z, t)
+    end
+  end
+
+  def test_computes_sha_1_function_for_t_between_20_and_39
+    x = "11101111110011011010101110001001"
+    y = "10011000101110101101110011111110"
+    z = "00010000001100100101010001110110"
+
+    expected = "01100111010001010010001100000001"
+
+    20.upto(39) do |t|
+      assert_equal expected, @p.sha_1_function(x, y, z, t)
+    end
+  end
+
+  def test_computes_sha_1_function_for_t_between_40_and_59
+    x = "11101111110011011010101110001001"
+    y = "10011000101110101101110011111110"
+    z = "00010000001100100101010001110110"
+
+    expected = "10011000101110101101110011111110"
+
+    40.upto(59) do |t|
+      assert_equal expected, @p.sha_1_function(x, y, z, t)
+    end
+  end
+
+  def test_computes_sha_1_function_for_t_between_60_and_79
+    x = "11101111110011011010101110001001"
+    y = "10011000101110101101110011111110"
+    z = "00010000001100100101010001110110"
+
+    expected = "01100111010001010010001100000001"
+
+    60.upto(79) do |t|
+      assert_equal expected, @p.sha_1_function(x, y, z, t)
+    end
+  end
+
+  def test_updates_the_T_working_var
+    skip
+    a = "01100111010001010010001100000001"
+    b = "11101111110011011010101110001001"
+    c = "10011000101110101101110011111110"
+    d = "00010000001100100101010001110110"
+    e = "11000011110100101110000111110000"
+    k0 = @p.constant_for_t_0_to_19
+    w0 = "01100001011000100110001101100100"
+
+    t = '00'
+
+    assert_equal t, @p.update_t(a, b, c, d, e, k0, w0)
+  end
 end

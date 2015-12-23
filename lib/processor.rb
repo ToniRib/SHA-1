@@ -48,6 +48,16 @@ class Processor
     bitwise_exclusive_or([left, mid, right])
   end
 
+  def sha_1_function(x, y, z, t)
+    if (0..19).cover?(t)
+      ch_function(x, y, z)
+    elsif (20..39).cover?(t) || (60..79).cover?(t)
+      parity_function(x, y, z)
+    elsif (40..59).cover?(t)
+      maj_function(x, y, z)
+    end
+  end
+
   def pad_exclusive_or(left, right)
     (left.to_i(2) ^ right.to_i(2)).to_s(2).rjust(left.length, '0')
   end
@@ -92,6 +102,10 @@ class Processor
       d: @pre.initial_hash[3],
       e: @pre.initial_hash[4]
     }
+  end
+
+  def update_t(a, b, c, d, e, k, w)
+
   end
 
   def process(message)
