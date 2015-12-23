@@ -46,6 +46,15 @@ class ProcessorTest < Minitest::Test
     assert_equal '010111110', @p.bitwise_exclusive_or([str1, str2, str3, str4])
   end
 
+  def test_performs_bitwise_and_on_two_binary_strings
+    str1 = '0001'
+    str2 = '0011'
+    str3 = '1011'
+
+    assert_equal '0001', @p.bitwise_and(str1, str2)
+    assert_equal '0011', @p.bitwise_and(str2, str3)
+  end
+
   def test_preps_message_schedule_for_one_block_message
     message = one_segment_block
 

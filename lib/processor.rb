@@ -2,6 +2,10 @@ require 'pry'
 require_relative 'preprocessor'
 
 class Processor
+  def initialize
+    @pre = Preprocessor.new
+  end
+
   def circular_left_shift(binary, n)
     binary.chars.rotate!(n).join
   end
@@ -13,6 +17,10 @@ class Processor
     right = bitwise_exclusive_or(arr)
 
     pad_exclusive_or(left, right)
+  end
+
+  def bitwise_and(a, b)
+    (a.to_i(2) & b.to_i(2)).to_s(2).rjust(a.length, '0')
   end
 
   def pad_exclusive_or(left, right)
@@ -51,15 +59,13 @@ class Processor
   end
 
   def initialize_working_vars
-    pre = Preprocessor.new
-
     {
       T: nil,
-      a: pre.initial_hash[0],
-      b: pre.initial_hash[1],
-      c: pre.initial_hash[2],
-      d: pre.initial_hash[3],
-      e: pre.initial_hash[4]
+      a: @pre.initial_hash[0],
+      b: @pre.initial_hash[1],
+      c: @pre.initial_hash[2],
+      d: @pre.initial_hash[3],
+      e: @pre.initial_hash[4]
     }
   end
 
@@ -84,19 +90,19 @@ class Processor
   end
 
   def constant_for_t_0_to_19
-    '5a827999'
+    @pre.hex_to_binary('5a827999')
   end
 
   def constant_for_t_20_to_39
-    '6ed9eba1'
+    @pre.hex_to_binary('6ed9eba1')
   end
 
   def constant_for_t_40_to_59
-    '8f1bbcdc'
+    @pre.hex_to_binary('8f1bbcdc')
   end
 
   def constant_for_t_60_to_79
-    'cd62c1d6'
+    @pre.hex_to_binary('cd62c1d6')
   end
 
   # write the crazy sha-1 function
