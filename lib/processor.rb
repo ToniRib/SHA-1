@@ -41,6 +41,13 @@ class Processor
     bitwise_exclusive_or([x, y, z])
   end
 
+  def maj_function(x, y, z)
+    left = bitwise_and(x, y)
+    mid = bitwise_and(x, z)
+    right = bitwise_and(y, z)
+    bitwise_exclusive_or([left, mid, right])
+  end
+
   def pad_exclusive_or(left, right)
     (left.to_i(2) ^ right.to_i(2)).to_s(2).rjust(left.length, '0')
   end
