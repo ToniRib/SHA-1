@@ -19,6 +19,10 @@ class Processor
     pad_exclusive_or(left, right)
   end
 
+  def pad_exclusive_or(left, right)
+    (left.to_i(2) ^ right.to_i(2)).to_s(2).rjust(left.length, '0')
+  end
+
   def bitwise_and(a, b)
     (a.to_i(2) & b.to_i(2)).to_s(2).rjust(a.length, '0')
   end
@@ -56,10 +60,6 @@ class Processor
     elsif (40..59).cover?(t)
       maj_function(x, y, z)
     end
-  end
-
-  def pad_exclusive_or(left, right)
-    (left.to_i(2) ^ right.to_i(2)).to_s(2).rjust(left.length, '0')
   end
 
   def generate_schedule(block)
@@ -104,8 +104,16 @@ class Processor
     }
   end
 
-  def update_t(a, b, c, d, e, k, w)
+  def update_t(a, b, c, d, e, w, t)
+    rotated_a = circular_left_shift(a, 5).to_i(2)
+    sha_1 = sha_1_function(b, c, d, t).to_i(2)
+    constant = determine_constant(t).to_i(2)
+    e = e.to_i(2)
+    w = w.to_i(2)
+    modulo = 2**32
 
+    add = ((rotated_a + sha_1 + e + constant + w) % modulo).to_s(2)
+    add.rjust(32, '0')
   end
 
   def process(message)
@@ -126,6 +134,18 @@ class Processor
 
   def index_is_zero(index)
     index.zero?
+  end
+
+  def determine_constant(t)
+    if (0..19).cover?(t)
+      constant_for_t_0_to_19
+    elsif (20..39).cover?(t)
+      constant_for_t_20_to_39
+    elsif (40..59).cover?(t)
+      constant_for_t_40_to_59
+    elsif (60..79).cover?(t)
+      constant_for_t_60_to_79
+    end
   end
 
   def constant_for_t_0_to_19

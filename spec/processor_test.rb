@@ -281,18 +281,17 @@ class ProcessorTest < Minitest::Test
     end
   end
 
-  def test_updates_the_T_working_var
-    skip
+  def test_updates_the_T_working_var_first_time
     a = "01100111010001010010001100000001"
     b = "11101111110011011010101110001001"
     c = "10011000101110101101110011111110"
     d = "00010000001100100101010001110110"
     e = "11000011110100101110000111110000"
-    k0 = @p.constant_for_t_0_to_19
     w0 = "01100001011000100110001101100100"
+    t = 0
 
-    t = '00'
+    expected = '00000001000101101111110000010111'
 
-    assert_equal t, @p.update_t(a, b, c, d, e, k0, w0)
+    assert_equal expected, @p.update_t(a, b, c, d, e, w0, t)
   end
 end
