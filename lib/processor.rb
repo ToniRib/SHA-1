@@ -104,7 +104,20 @@ class Processor
     }
   end
 
-  def update_t(a, b, c, d, e, w, t)
+  def update_working_vars(vars, w, t)
+    temp = compute_temp(vars[:a], vars[:b], vars[:c], vars[:d], vars[:e], w, t)
+    
+    {
+      T: temp,
+      e: vars[:d],
+      d: vars[:c],
+      c: circular_left_shift(vars[:b], 30),
+      b: vars[:a],
+      a: temp
+    }
+  end
+
+  def compute_temp(a, b, c, d, e, w, t)
     rotated_a = circular_left_shift(a, 5).to_i(2)
     sha_1 = sha_1_function(b, c, d, t).to_i(2)
     constant = determine_constant(t).to_i(2)
