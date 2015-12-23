@@ -23,6 +23,14 @@ class Processor
     (a.to_i(2) & b.to_i(2)).to_s(2).rjust(a.length, '0')
   end
 
+  def bitwise_complement(binary)
+    complement = binary.chars.map do |n|
+      n.to_i == 0 ? 1 : 0
+    end
+    
+    complement.join
+  end
+
   def pad_exclusive_or(left, right)
     (left.to_i(2) ^ right.to_i(2)).to_s(2).rjust(left.length, '0')
   end

@@ -55,6 +55,14 @@ class ProcessorTest < Minitest::Test
     assert_equal '0011', @p.bitwise_and(str2, str3)
   end
 
+  def test_performs_bitwise_complement_on_a_binary_string
+    str1 = '0001'
+    str2 = '0011'
+
+    assert_equal '1110', @p.bitwise_complement(str1)
+    assert_equal '1100', @p.bitwise_complement(str2)
+  end
+
   def test_preps_message_schedule_for_one_block_message
     message = one_segment_block
 
