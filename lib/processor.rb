@@ -67,7 +67,7 @@ class Processor
     message.each_with_index do |block, index|
       schedule = generate_schedule(block)
 
-      if index == 0
+      if index_is_zero(index)
         working_vars = initialize_working_vars
       else
         working_vars = update_working_vars
@@ -77,6 +77,26 @@ class Processor
     end
 
     message_digest #something here
+  end
+
+  def index_is_zero(index)
+    index.zero?
+  end
+
+  def constant_for_t_0_to_19
+    '5a827999'
+  end
+
+  def constant_for_t_20_to_39
+    '6ed9eba1'
+  end
+
+  def constant_for_t_40_to_59
+    '8f1bbcdc'
+  end
+
+  def constant_for_t_60_to_79
+    'cd62c1d6'
   end
 
   # write the crazy sha-1 function
