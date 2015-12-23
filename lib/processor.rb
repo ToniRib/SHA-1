@@ -106,7 +106,7 @@ class Processor
 
   def update_working_vars(vars, w, t)
     temp = compute_temp(vars[:a], vars[:b], vars[:c], vars[:d], vars[:e], w, t)
-    
+
     {
       T: temp,
       e: vars[:d],
@@ -130,6 +130,9 @@ class Processor
   end
 
   def process(message)
+    # this is the process function that hasn't been implemented or tested yet
+    # steps 1 - 3 of spec are complete, need step 4
+    # then the final message digest computation
     message.each_with_index do |block, index|
       schedule = generate_schedule(block)
 
