@@ -142,7 +142,7 @@ class Processor
         working_vars = update_working_vars
       end
 
-      hash = compute_intermediate_hash # need to figure this out
+      hash = compute_intermediate_hash # need to figure this out (step 4)
     end
 
     message_digest #something here
@@ -179,6 +179,4 @@ class Processor
   def constant_for_t_60_to_79
     @pre.hex_to_binary('cd62c1d6')
   end
-
-  # write the crazy sha-1 function
 end
