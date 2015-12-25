@@ -134,28 +134,46 @@ class Processor
   end
 
   def compute_intermediate_hash(previous, working_vars)
-
+    [
+      addition_modulo_2([previous[0].to_i(2), working_vars[:a].to_i(2)]),
+      addition_modulo_2([previous[1].to_i(2), working_vars[:b].to_i(2)]),
+      addition_modulo_2([previous[2].to_i(2), working_vars[:c].to_i(2)]),
+      addition_modulo_2([previous[3].to_i(2), working_vars[:d].to_i(2)]),
+      addition_modulo_2([previous[4].to_i(2), working_vars[:e].to_i(2)]),
+    ]
   end
 
   def process(message)
-    # this is the process function that hasn't been implemented or tested yet
-    # steps 1 - 3 of spec are complete, need step 4
-    # then the final message digest computation
+    hash_value = []
+
     message.each_with_index do |block, index|
       schedule = generate_schedule(block)
 
-      hash_value = @pre.initial_hash
-
       if index_is_zero(index)
+        hash_value = @pre.initial_hash
         working_vars = initialize_working_vars
       else
-        working_vars = update_working_vars
+        working_vars = set_working_vars(hash_value)
       end
 
-      hash_value = compute_intermediate_hash # need to figure this out (step 4)
+      0.upto(79) do |t|
+        working_vars = update_working_vars(working_vars, schedule["t#{index}"], t)
+      end
+
+      hash_value = compute_intermediate_hash(hash_value, working_vars)
     end
 
-    message_digest #something here
+    hash_value.join.to_i(2).to_s(16)
+  end
+
+  def set_working_vars(hash_value)
+    {
+      a: hash_value[0],
+      b: hash_value[1],
+      c: hash_value[2],
+      d: hash_value[3],
+      e: hash_value[4]
+    }
   end
 
   def index_is_zero(index)
