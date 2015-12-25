@@ -163,6 +163,7 @@ class Processor
       hash_value = compute_intermediate_hash(hash_value, working_vars)
     end
 
+    binding.pry
     hash_value.join.to_i(2).to_s(16)
   end
 
