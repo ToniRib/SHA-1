@@ -148,18 +148,19 @@ class Processor
       schedule = generate_schedule(block)
 
       # need to check below here
-      if index_is_zero(index)
-        hash_value = @pre.initial_hash
-        working_vars = initialize_working_vars
-      else
-        working_vars = set_working_vars(hash_value)
-      end
+      working_vars = initialize_working_vars
+      # if index_is_zero(index)
+      #   hash_value = @pre.initial_hash
+      #   working_vars = initialize_working_vars
+      # else
+      #   working_vars = set_working_vars(hash_value)
+      # end
 
       0.upto(79) do |t|
         working_vars = update_working_vars(working_vars, schedule["t#{index}"], t)
       end
 
-      hash_value = compute_intermediate_hash(hash_value, working_vars)
+      hash_value = compute_intermediate_hash(@pre.initial_hash, working_vars)
     end
 
     # binding.pry
