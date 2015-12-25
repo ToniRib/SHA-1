@@ -365,7 +365,7 @@ class ProcessorTest < Minitest::Test
 
     expected = Digest::SHA1.hexdigest('toni')
     # expected = '532ff71c0f0c138e61afd0c77279be9f5bb6c4f0'
-    # actual = '126590acbc5e3d5e0060fa8ea79055dee20af1d'
+    # actual = '1c9dea7500b5ed08745e888ec10a2891c6a14fea'
 
     assert_equal expected, @p.process(binary_message)
   end

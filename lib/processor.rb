@@ -206,6 +206,6 @@ class Processor
   end
 
   def constant_for_t_60_to_79
-    @pre.hex_to_binary('cd62c1d6')
+    @pre.hex_to_binary('ca62c1d6')
   end
 end
