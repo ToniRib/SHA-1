@@ -125,8 +125,16 @@ class Processor
     w = w.to_i(2)
     modulo = 2**32
 
-    add = ((rotated_a + sha_1 + e + constant + w) % modulo).to_s(2)
-    add.rjust(32, '0')
+    addition_modulo_2([rotated_a, sha_1, e, constant, w])
+  end
+
+  def addition_modulo_2(integers)
+    binary = (integers.reduce(:+) % (2**32)).to_s(2)
+    binary.rjust(32, '0')
+  end
+
+  def compute_intermediate_hash(previous, working_vars)
+
   end
 
   def process(message)
@@ -136,13 +144,15 @@ class Processor
     message.each_with_index do |block, index|
       schedule = generate_schedule(block)
 
+      hash_value = @pre.initial_hash
+
       if index_is_zero(index)
         working_vars = initialize_working_vars
       else
         working_vars = update_working_vars
       end
 
-      hash = compute_intermediate_hash # need to figure this out (step 4)
+      hash_value = compute_intermediate_hash # need to figure this out (step 4)
     end
 
     message_digest #something here
