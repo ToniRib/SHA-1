@@ -95,7 +95,6 @@ class Processor
 
   def initialize_working_vars
     {
-      T: nil,
       a: @pre.initial_hash[0],
       b: @pre.initial_hash[1],
       c: @pre.initial_hash[2],
@@ -108,7 +107,6 @@ class Processor
     temp = compute_temp(vars[:a], vars[:b], vars[:c], vars[:d], vars[:e], w, t)
 
     {
-      T: temp,
       e: vars[:d],
       d: vars[:c],
       c: circular_left_shift(vars[:b], 30),
@@ -149,6 +147,7 @@ class Processor
     message.each_with_index do |block, index|
       schedule = generate_schedule(block)
 
+      # need to check below here
       if index_is_zero(index)
         hash_value = @pre.initial_hash
         working_vars = initialize_working_vars
@@ -163,7 +162,7 @@ class Processor
       hash_value = compute_intermediate_hash(hash_value, working_vars)
     end
 
-    binding.pry
+    # binding.pry
     hash_value.join.to_i(2).to_s(16)
   end
 
