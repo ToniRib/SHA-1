@@ -1,4 +1,5 @@
 require_relative 'processor'
+require_relative 'preprocessor'
 require 'pry'
 
 pre = Preprocessor.new

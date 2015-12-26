@@ -2,7 +2,7 @@
 
 ## Overview
 
-This code implements the SHA-1 hashing algorithm as described in the [Federal Information Processing Standards Publication: Secure Hash Standard](http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf).
+This code implements the SHA-1 hashing algorithm as described in the [Federal Information Processing Standards Publication: Secure Hash Standard](http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf) using an object-oriented approach.
 
 ## Command Line Interface
 
@@ -12,17 +12,21 @@ This program can be run from the command line in the base directory of the proje
 ruby lib/sha1_hexdigest.rb message
 ```
 
-### Example
+### Examples
 
 ```
 $ ruby lib/sha1_hexdigest.rb toni
 Your SHA-1 Hex Digest for the message 'toni' is:
 532ff71c0f0c138e61afd0c77279be9f5bb6c4f0
+
+$ ruby lib/sha1_hexdigest.rb 'longer multi word message in quotes'
+Your SHA-1 Hex Digest for the message 'longer multi word message in quotes' is:
+b1676709057f22073ee08832f2d91f05a90e7a0b
 ```
 
 ## Testing Suite
 
-The Preprocessor and Processor classes each have a corresponding testing file written with [minitest](https://github.com/seattlerb/minitest) which can be run from the terminal using mrspec:
+Each class has a corresponding testing file written with [minitest](https://github.com/seattlerb/minitest) which can be run from the terminal using mrspec:
 
 ```
 $ mrspec
@@ -73,3 +77,5 @@ Fabulous run in 0.034816s, 689.3413 runs/s, 2958.4230 assertions/s.
 
 24 runs, 103 assertions, 0 failures, 0 errors, 0 skips
 ```
+
+No other gems are required to run this program as it is written in pure ruby.
