@@ -1,9 +1,17 @@
 require 'pry'
-require_relative 'preprocessor'
 
 class Processor
-  def initialize
-    @pre = Preprocessor.new
+  def hex_to_binary(hex_string)
+    hex_string.hex.to_s(2).rjust(hex_string.size * 4, '0')
+  end
+
+  def initial_hash
+    h0 = hex_to_binary('67452301')
+    h1 = hex_to_binary('efcdab89')
+    h2 = hex_to_binary('98badcfe')
+    h3 = hex_to_binary('10325476')
+    h4 = hex_to_binary('c3d2e1f0')
+    [h0, h1, h2, h3, h4]
   end
 
   def circular_left_shift(binary, n)
@@ -95,11 +103,11 @@ class Processor
 
   def initialize_working_vars
     {
-      a: @pre.initial_hash[0],
-      b: @pre.initial_hash[1],
-      c: @pre.initial_hash[2],
-      d: @pre.initial_hash[3],
-      e: @pre.initial_hash[4]
+      a: initial_hash[0],
+      b: initial_hash[1],
+      c: initial_hash[2],
+      d: initial_hash[3],
+      e: initial_hash[4]
     }
   end
 
@@ -147,7 +155,7 @@ class Processor
       schedule = generate_schedule(block)
 
       if index_is_zero(index)
-        hash_value = @pre.initial_hash
+        hash_value = initial_hash
         working_vars = initialize_working_vars
       else
         working_vars = set_working_vars(hash_value)
@@ -190,18 +198,18 @@ class Processor
   end
 
   def constant_for_t_0_to_19
-    @pre.hex_to_binary('5a827999')
+    hex_to_binary('5a827999')
   end
 
   def constant_for_t_20_to_39
-    @pre.hex_to_binary('6ed9eba1')
+    hex_to_binary('6ed9eba1')
   end
 
   def constant_for_t_40_to_59
-    @pre.hex_to_binary('8f1bbcdc')
+    hex_to_binary('8f1bbcdc')
   end
 
   def constant_for_t_60_to_79
-    @pre.hex_to_binary('ca62c1d6')
+    hex_to_binary('ca62c1d6')
   end
 end

@@ -1,5 +1,3 @@
-require 'pry'
-
 class Preprocessor
   def byte_to_binary(byte)
     byte.to_s(2).rjust(8, '0')
@@ -31,27 +29,12 @@ class Preprocessor
   end
 
   def divide_into_512_bit_slices(binary)
-    binary.chars.each_slice(512).to_a.map do |msg|
-      msg.join
-    end
+    binary.chars.each_slice(512).to_a.map { |msg| msg.join }
   end
 
   def preprocess(message)
     l = sixty_four_bit_encoded_message_length(message)
     binary_message = add_message_and_one_bit(message)[0..-65] + l
     divide_into_512_bit_slices(binary_message)
-  end
-
-  def hex_to_binary(hex_string)
-    hex_string.hex.to_s(2).rjust(hex_string.size * 4, '0')
-  end
-
-  def initial_hash
-    h0 = hex_to_binary('67452301')
-    h1 = hex_to_binary('efcdab89')
-    h2 = hex_to_binary('98badcfe')
-    h3 = hex_to_binary('10325476')
-    h4 = hex_to_binary('c3d2e1f0')
-    [h0, h1, h2, h3, h4]
   end
 end
