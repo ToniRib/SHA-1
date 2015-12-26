@@ -1,5 +1,7 @@
 require_relative 'conversions'
 
+# Preprocesses the original message by converting it to binary and performing
+# the other operations required by the specification.
 class Preprocessor
   include Conversions
 

@@ -1,13 +1,12 @@
 require_relative 'word_operations'
 require_relative 'conversions'
+require_relative 'sha1_functions'
 
+# Performs the actual processing of the string to create the message digest
+# once all of the preprocessing has been performed.
 class Processor
   include WordOperations
   include Conversions
-
-  def pad_front_with_zeros(length, str)
-    str.rjust(length, '0')
-  end
 
   def initial_hash
     h0 = hex_to_binary('67452301')
@@ -17,34 +16,6 @@ class Processor
     h4 = hex_to_binary('c3d2e1f0')
 
     [h0, h1, h2, h3, h4]
-  end
-
-  def ch_function(x, y, z)
-    x_complement_and_z = bitwise_and(bitwise_complement(x), z)
-    x_and_y = bitwise_and(x, y)
-    bitwise_exclusive_or([x_complement_and_z, x_and_y])
-  end
-
-  def parity_function(x, y, z)
-    bitwise_exclusive_or([x, y, z])
-  end
-
-  def maj_function(x, y, z)
-    left = bitwise_and(x, y)
-    mid = bitwise_and(x, z)
-    right = bitwise_and(y, z)
-
-    bitwise_exclusive_or([left, mid, right])
-  end
-
-  def sha_1_function(x, y, z, t)
-    if (0..19).cover?(t)
-      ch_function(x, y, z)
-    elsif (20..39).cover?(t) || (60..79).cover?(t)
-      parity_function(x, y, z)
-    elsif (40..59).cover?(t)
-      maj_function(x, y, z)
-    end
   end
 
   def generate_schedule(block)
@@ -102,17 +73,12 @@ class Processor
 
   def compute_temp(a, b, c, d, e, w, t)
     rotated_a = circular_left_shift(a, 5).to_i(2)
-    sha_1 = sha_1_function(b, c, d, t).to_i(2)
+    sha_1 = SHA1Functions.new.calculate(b, c, d, t).to_i(2)
     constant = determine_constant(t).to_i(2)
     e = e.to_i(2)
     w = w.to_i(2)
 
     addition_modulo_2([rotated_a, sha_1, e, constant, w])
-  end
-
-  def addition_modulo_2(integers)
-    binary = (integers.reduce(:+) % (2**32)).to_s(2)
-    pad_front_with_zeros(32, binary)
   end
 
   def compute_intermediate_hash(previous, working_vars)
@@ -135,7 +101,7 @@ class Processor
     message.each_with_index do |block, index|
       schedule = generate_schedule(block)
 
-      if index_is_zero?(index)
+      if index.zero?
         hash_value = initial_hash
         working_vars = initialize_working_vars
       else
@@ -163,10 +129,6 @@ class Processor
   end
 
   private
-
-  def index_is_zero?(index)
-    index.zero?
-  end
 
   def determine_constant(t)
     if (0..19).cover?(t)

@@ -1,3 +1,5 @@
+# This modules contains the methods to convert between different number systems
+# and from strings with characters to their binary equivalent
 module Conversions
   def hex_to_binary(hexstr)
     pad_front_with_zeros(hexstr.size * 4, hexstr.hex.to_s(2))

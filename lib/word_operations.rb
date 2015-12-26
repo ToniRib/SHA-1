@@ -1,3 +1,5 @@
+# This module contains the methods necessary to perform the logical operations
+# on various 32-bit words.
 module WordOperations
   def circular_left_shift(binary, n)
     binary.chars.rotate!(n).join
@@ -28,5 +30,14 @@ module WordOperations
 
   def flip_zero_and_one(n)
     n == '0' ? 1 : 0
+  end
+
+  def addition_modulo_2(integers)
+    binary = (integers.reduce(:+) % (2**32)).to_s(2)
+    pad_front_with_zeros(32, binary)
+  end
+
+  def pad_front_with_zeros(length, str)
+    str.rjust(length, '0')
   end
 end
