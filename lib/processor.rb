@@ -118,13 +118,9 @@ class Processor
   def compute_temp(a, b, c, d, e, w, t)
     rotated_a = circular_left_shift(a, 5).to_i(2)
     sha_1 = sha_1_function(b, c, d, t).to_i(2)
-
-    first = rotated_a + sha_1
-
     constant = determine_constant(t).to_i(2)
     e = e.to_i(2)
     w = w.to_i(2)
-    modulo = 2**32
 
     addition_modulo_2([rotated_a, sha_1, e, constant, w])
   end
