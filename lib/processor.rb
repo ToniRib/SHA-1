@@ -1,8 +1,12 @@
 require 'pry'
 
 class Processor
-  def hex_to_binary(hex_string)
-    hex_string.hex.to_s(2).rjust(hex_string.size * 4, '0')
+  def pad_front_with_zeros(length, str)
+    str.rjust(length, '0')
+  end
+
+  def hex_to_binary(hexstr)
+    pad_front_with_zeros(hexstr.size * 4, hexstr.hex.to_s(2))
   end
 
   def initial_hash
@@ -11,6 +15,7 @@ class Processor
     h2 = hex_to_binary('98badcfe')
     h3 = hex_to_binary('10325476')
     h4 = hex_to_binary('c3d2e1f0')
+
     [h0, h1, h2, h3, h4]
   end
 
@@ -24,23 +29,21 @@ class Processor
     left = arr.shift
     right = bitwise_exclusive_or(arr)
 
-    pad_exclusive_or(left, right)
+    exclusive_or(left, right)
   end
 
-  def pad_exclusive_or(left, right)
-    (left.to_i(2) ^ right.to_i(2)).to_s(2).rjust(left.length, '0')
+  def exclusive_or(left, right)
+    str = (left.to_i(2) ^ right.to_i(2)).to_s(2)
+    pad_front_with_zeros(left.length, str)
   end
 
   def bitwise_and(a, b)
-    (a.to_i(2) & b.to_i(2)).to_s(2).rjust(a.length, '0')
+    str = (a.to_i(2) & b.to_i(2)).to_s(2)
+    pad_front_with_zeros(a.length, str)
   end
 
   def bitwise_complement(binary)
-    complement = binary.chars.map do |n|
-      n.to_i == 0 ? 1 : 0
-    end
-
-    complement.join
+    binary.chars.map { |n| n == '0' ? 1 : 0 }.join
   end
 
   def ch_function(x, y, z)
@@ -136,17 +139,21 @@ class Processor
 
   def addition_modulo_2(integers)
     binary = (integers.reduce(:+) % (2**32)).to_s(2)
-    binary.rjust(32, '0')
+    pad_front_with_zeros(32, binary)
   end
 
   def compute_intermediate_hash(previous, working_vars)
     [
-      addition_modulo_2([previous[0].to_i(2), working_vars[:a].to_i(2)]),
-      addition_modulo_2([previous[1].to_i(2), working_vars[:b].to_i(2)]),
-      addition_modulo_2([previous[2].to_i(2), working_vars[:c].to_i(2)]),
-      addition_modulo_2([previous[3].to_i(2), working_vars[:d].to_i(2)]),
-      addition_modulo_2([previous[4].to_i(2), working_vars[:e].to_i(2)]),
+      add_previous_to_working(previous, working_vars, 0, :a),
+      add_previous_to_working(previous, working_vars, 1, :b),
+      add_previous_to_working(previous, working_vars, 2, :c),
+      add_previous_to_working(previous, working_vars, 3, :d),
+      add_previous_to_working(previous, working_vars, 4, :e)
     ]
+  end
+
+  def add_previous_to_working(previous, working, i, letter)
+    addition_modulo_2([previous[i].to_i(2), working[letter].to_i(2)])
   end
 
   def process(message)
@@ -155,11 +162,11 @@ class Processor
     message.each_with_index do |block, index|
       schedule = generate_schedule(block)
 
-      if index_is_zero(index)
+      if index_is_zero?(index)
         hash_value = initial_hash
         working_vars = initialize_working_vars
       else
-        working_vars = set_working_vars(hash_value)
+        working_vars = working_vars_as_current_hash_value(hash_value)
       end
 
       0.upto(79) do |t|
@@ -172,7 +179,7 @@ class Processor
     hash_value.join.to_i(2).to_s(16)
   end
 
-  def set_working_vars(hash_value)
+  def working_vars_as_current_hash_value(hash_value)
     {
       a: hash_value[0],
       b: hash_value[1],
@@ -182,7 +189,9 @@ class Processor
     }
   end
 
-  def index_is_zero(index)
+  private
+
+  def index_is_zero?(index)
     index.zero?
   end
 

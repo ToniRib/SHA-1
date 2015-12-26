@@ -1,4 +1,10 @@
 class Preprocessor
+  def preprocess(message)
+    l = sixty_four_bit_encoded_message_length(message)
+    binary_message = add_message_and_one_bit(message)[0..-65] + l
+    divide_into_512_bit_slices(binary_message)
+  end
+
   def byte_to_binary(byte)
     byte.to_s(2).rjust(8, '0')
   end
@@ -29,12 +35,6 @@ class Preprocessor
   end
 
   def divide_into_512_bit_slices(binary)
-    binary.chars.each_slice(512).to_a.map { |msg| msg.join }
-  end
-
-  def preprocess(message)
-    l = sixty_four_bit_encoded_message_length(message)
-    binary_message = add_message_and_one_bit(message)[0..-65] + l
-    divide_into_512_bit_slices(binary_message)
+    binary.chars.each_slice(512).to_a.map(&:join)
   end
 end
