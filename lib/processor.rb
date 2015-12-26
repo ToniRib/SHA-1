@@ -104,7 +104,6 @@ class Processor
   end
 
   def update_working_vars(vars, w, t)
-    # binding.pry if t == 1
     temp = compute_temp(vars[:a], vars[:b], vars[:c], vars[:d], vars[:e], w, t)
 
     {
@@ -117,8 +116,6 @@ class Processor
   end
 
   def compute_temp(a, b, c, d, e, w, t)
-    # error is in here somewhere!!
-    # binding.pry if t == 1
     rotated_a = circular_left_shift(a, 5).to_i(2)
     sha_1 = sha_1_function(b, c, d, t).to_i(2)
 
@@ -153,7 +150,6 @@ class Processor
     message.each_with_index do |block, index|
       schedule = generate_schedule(block)
 
-      # need to check below here
       working_vars = initialize_working_vars
       # if index_is_zero(index)
       #   hash_value = @pre.initial_hash
@@ -163,14 +159,12 @@ class Processor
       # end
 
       0.upto(79) do |t|
-        working_vars = update_working_vars(working_vars, schedule["t#{index}"], t)
-        # binding.pry if t == 79
+        working_vars = update_working_vars(working_vars, schedule["t#{t}"], t)
       end
 
       hash_value = compute_intermediate_hash(@pre.initial_hash, working_vars)
     end
 
-    # binding.pry
     hash_value.join.to_i(2).to_s(16)
   end
 
