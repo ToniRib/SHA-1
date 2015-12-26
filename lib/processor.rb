@@ -150,19 +150,18 @@ class Processor
     message.each_with_index do |block, index|
       schedule = generate_schedule(block)
 
-      working_vars = initialize_working_vars
-      # if index_is_zero(index)
-      #   hash_value = @pre.initial_hash
-      #   working_vars = initialize_working_vars
-      # else
-      #   working_vars = set_working_vars(hash_value)
-      # end
+      if index_is_zero(index)
+        hash_value = @pre.initial_hash
+        working_vars = initialize_working_vars
+      else
+        working_vars = set_working_vars(hash_value)
+      end
 
       0.upto(79) do |t|
         working_vars = update_working_vars(working_vars, schedule["t#{t}"], t)
       end
 
-      hash_value = compute_intermediate_hash(@pre.initial_hash, working_vars)
+      hash_value = compute_intermediate_hash(hash_value, working_vars)
     end
 
     hash_value.join.to_i(2).to_s(16)
