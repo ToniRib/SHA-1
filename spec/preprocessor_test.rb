@@ -1,5 +1,6 @@
-require 'preprocessor'
-require 'minitest'
+require './lib/preprocessor'
+require 'minitest/autorun'
+require 'minitest/pride'
 
 class PreprocessorTest < Minitest::Test
   def setup

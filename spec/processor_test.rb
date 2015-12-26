@@ -1,5 +1,7 @@
-require 'minitest'
-require 'processor'
+require './lib/processor'
+require 'minitest/autorun'
+require 'minitest/pride'
+require 'digest'
 
 class ProcessorTest < Minitest::Test
   def setup
