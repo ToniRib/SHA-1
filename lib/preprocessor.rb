@@ -1,18 +1,12 @@
+require_relative 'conversions'
+
 class Preprocessor
+  include Conversions
+
   def preprocess(message)
     l = sixty_four_bit_encoded_message_length(message)
     binary_message = add_message_and_one_bit(message)[0..-65] + l
     divide_into_512_bit_slices(binary_message)
-  end
-
-  def byte_to_binary(byte)
-    byte.to_s(2).rjust(8, '0')
-  end
-
-  def word_to_binary(word)
-    bin = ''
-    word.each_byte { |c| bin += byte_to_binary(c) }
-    bin
   end
 
   def number_of_blocks(message)
