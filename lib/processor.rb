@@ -57,6 +57,7 @@ class Processor
     left = bitwise_and(x, y)
     mid = bitwise_and(x, z)
     right = bitwise_and(y, z)
+
     bitwise_exclusive_or([left, mid, right])
   end
 
@@ -187,29 +188,13 @@ class Processor
 
   def determine_constant(t)
     if (0..19).cover?(t)
-      constant_for_t_0_to_19
+      hex_to_binary('5a827999')
     elsif (20..39).cover?(t)
-      constant_for_t_20_to_39
+      hex_to_binary('6ed9eba1')
     elsif (40..59).cover?(t)
-      constant_for_t_40_to_59
+      hex_to_binary('8f1bbcdc')
     elsif (60..79).cover?(t)
-      constant_for_t_60_to_79
+      hex_to_binary('ca62c1d6')
     end
-  end
-
-  def constant_for_t_0_to_19
-    hex_to_binary('5a827999')
-  end
-
-  def constant_for_t_20_to_39
-    hex_to_binary('6ed9eba1')
-  end
-
-  def constant_for_t_40_to_59
-    hex_to_binary('8f1bbcdc')
-  end
-
-  def constant_for_t_60_to_79
-    hex_to_binary('ca62c1d6')
   end
 end
