@@ -177,20 +177,23 @@ class ProcessorTest < Minitest::Test
     assert_equal expected, @p.initialize_working_vars
   end
 
-  
+
 
   def test_updates_the_T_working_var_first_time
-    a = "01100111010001010010001100000001"
-    b = "11101111110011011010101110001001"
-    c = "10011000101110101101110011111110"
-    d = "00010000001100100101010001110110"
-    e = "11000011110100101110000111110000"
+    vars = {
+      a: "01100111010001010010001100000001",
+      b: "11101111110011011010101110001001",
+      c: "10011000101110101101110011111110",
+      d: "00010000001100100101010001110110",
+      e: "11000011110100101110000111110000"
+    }
+
     w0 = "01100001011000100110001101100100"
     t = 0
 
     expected = '00000001000101101111110000010111'
 
-    assert_equal expected, @p.compute_temp(a, b, c, d, e, w0, t)
+    assert_equal expected, @p.compute_temp(vars, w0, t)
   end
 
   def test_updates_the_working_vars_for_t_0

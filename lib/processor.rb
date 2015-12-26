@@ -8,6 +8,10 @@ class Processor
   include WordOperations
   include Conversions
 
+  def initialize
+    @sha1 = SHA1Functions.new
+  end
+
   def initial_hash
     h0 = hex_to_binary('67452301')
     h1 = hex_to_binary('efcdab89')
@@ -37,10 +41,7 @@ class Processor
   end
 
   def gather_previous_message_schedule_words(schedule, i)
-    [schedule['t' + (i - 3).to_s],
-     schedule['t' + (i - 8).to_s],
-     schedule['t' + (i - 14).to_s],
-     schedule['t' + (i - 16).to_s]]
+    [3, 8, 14, 16].map { |n| schedule['t' + (i - n).to_s] }
   end
 
   def perform_xor_and_rotate_left_once(schedule, i)
@@ -60,7 +61,7 @@ class Processor
   end
 
   def update_working_vars(vars, w, t)
-    temp = compute_temp(vars[:a], vars[:b], vars[:c], vars[:d], vars[:e], w, t)
+    temp = compute_temp(vars, w, t)
 
     {
       e: vars[:d],
@@ -71,11 +72,11 @@ class Processor
     }
   end
 
-  def compute_temp(a, b, c, d, e, w, t)
-    rotated_a = circular_left_shift(a, 5).to_i(2)
-    sha_1 = SHA1Functions.new.calculate(b, c, d, t).to_i(2)
+  def compute_temp(vars, w, t)
+    rotated_a = circular_left_shift(vars[:a], 5).to_i(2)
+    sha_1 = @sha1.calculate(vars[:b], vars[:c], vars[:d], t).to_i(2)
     constant = determine_constant(t).to_i(2)
-    e = e.to_i(2)
+    e = vars[:e].to_i(2)
     w = w.to_i(2)
 
     addition_modulo_2([rotated_a, sha_1, e, constant, w])
