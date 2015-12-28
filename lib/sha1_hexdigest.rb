@@ -1,14 +1,12 @@
 require_relative 'processor'
 require_relative 'preprocessor'
-require 'pry'
 
-pre = Preprocessor.new
-p = Processor.new
-
+# Runner file for calculating the SHA-1 hexdigest for a user-provided message
+# from the command line.
 message = ARGV[0]
 
-binary_message = pre.preprocess(message)
-digest = p.process(binary_message)
+binary_message = Preprocessor.new.preprocess(message)
+digest = Processor.new.process(binary_message)
 
 puts "Your SHA-1 Hex Digest for the message '#{message}' is:"
 puts digest
