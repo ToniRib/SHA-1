@@ -21,10 +21,6 @@ class BinaryString
     n == '0' ? 1 : 0
   end
 
-  def circular_left_shift!(n)
-    @value = value.chars.rotate!(n).join
-  end
-
   def circular_left_shift(n)
     value.chars.rotate!(n).join
   end

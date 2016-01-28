@@ -5,8 +5,8 @@ require_relative 'preprocessor'
 # from the command line.
 message = ARGV[0]
 
-binary_message = Preprocessor.new.preprocess(message)
-digest = Processor.new.process(binary_message)
+binary_message = Preprocessor.new.binary_message(message)
+digest = Processor.new.hexdigest(binary_message)
 
 puts "Your SHA-1 Hex Digest for the message '#{message}' is:"
 puts digest

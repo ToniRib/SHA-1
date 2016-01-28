@@ -1,4 +1,5 @@
 require './lib/processor'
+require './lib/preprocessor'
 require './lib/binary_string'
 require 'minitest/autorun'
 require 'minitest/pride'
@@ -11,22 +12,6 @@ class ProcessorTest < Minitest::Test
 
   def one_segment_block
     "01100001011000100110001101100100011001010110000101100010011000110110010001100101011000010110001001100011011001000110010101100001011000100110001101100100011001010110000101100010011000110110010001100101011000010110001001100011011001000110010101100001011000100110001101100100011001010110000101100010011000110110010001100101011000010110001001100011011001000110010101100001011000100110001101100100011001010110000101100010011000110110010001100101011000010110001001100011011001000110010101100001011000100110001101100100"
-  end
-
-  def test_creates_initial_hash_in_binary
-    initial_hash = @p.initial_hash
-
-    expected = [
-      "01100111010001010010001100000001",
-      "11101111110011011010101110001001",
-      "10011000101110101101110011111110",
-      "00010000001100100101010001110110",
-      "11000011110100101110000111110000"
-    ]
-
-    initial_hash.each_with_index do |binary_string, i|
-      assert_equal expected[i], binary_string.value
-    end
   end
 
   def test_preps_message_schedule_for_one_block_message
@@ -236,22 +221,22 @@ class ProcessorTest < Minitest::Test
 
     expected = Digest::SHA1.hexdigest(message)
 
-    assert_equal expected, @p.process(binary_message)
+    assert_equal expected, @p.hexdigest(binary_message)
   end
 
   def test_computes_the_final_message_digest_for_a_long_message
     message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-    binary_message = Preprocessor.new.preprocess(message)
+    binary_message = Preprocessor.new.binary_message(message)
 
     expected = Digest::SHA1.hexdigest(message)
-    assert_equal expected, @p.process(binary_message)
+    assert_equal expected, @p.hexdigest(binary_message)
   end
 
   def test_computes_two_block_message
     message = "abcde" * 20
-    binary_message = Preprocessor.new.preprocess(message)
+    binary_message = Preprocessor.new.binary_message(message)
 
     expected = Digest::SHA1.hexdigest(message)
-    assert_equal expected, @p.process(binary_message)
+    assert_equal expected, @p.hexdigest(binary_message)
   end
 end

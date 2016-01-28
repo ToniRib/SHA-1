@@ -9,14 +9,24 @@ class Processor
   include WordOperations
   include Conversions
 
-  def initial_hash
-    h0 = hex_to_binary_string('67452301')
-    h1 = hex_to_binary_string('efcdab89')
-    h2 = hex_to_binary_string('98badcfe')
-    h3 = hex_to_binary_string('10325476')
-    h4 = hex_to_binary_string('c3d2e1f0')
+  def hexdigest(message)
+    hash_value = []
 
-    [h0, h1, h2, h3, h4]
+    message.each_with_index do |block, index|
+      schedule = generate_schedule(block)
+
+      hash_value = initial_hash if index.zero?
+
+      working_vars = working_vars_as_current_hash_value(hash_value)
+
+      0.upto(79) do |t|
+        working_vars = update_working_vars(working_vars, schedule["t#{t}"], t)
+      end
+
+      hash_value = compute_intermediate_hash(hash_value, working_vars)
+    end
+
+    hash_value.map { |v| v.value }.join.to_i(2).to_s(16)
   end
 
   def generate_schedule(block)
@@ -31,13 +41,6 @@ class Processor
     end
 
     schedule
-  end
-
-  def perform_xor_and_rotate_left_once(schedule, i)
-    words = gather_previous_message_schedule_words(schedule, i)
-    bitwise_xor = bitwise_exclusive_or(words)
-    bitwise_xor.circular_left_shift!(1)
-    bitwise_xor
   end
 
   def update_working_vars(vars, w, t)
@@ -73,31 +76,26 @@ class Processor
     ]
   end
 
+  private
+
+  def perform_xor_and_rotate_left_once(schedule, i)
+    words = gather_previous_message_schedule_words(schedule, i)
+    BinaryString.new(bitwise_exclusive_or(words).circular_left_shift(1))
+  end
+
+  def initial_hash
+    h0 = hex_to_binary_string('67452301')
+    h1 = hex_to_binary_string('efcdab89')
+    h2 = hex_to_binary_string('98badcfe')
+    h3 = hex_to_binary_string('10325476')
+    h4 = hex_to_binary_string('c3d2e1f0')
+
+    [h0, h1, h2, h3, h4]
+  end
+
   def add_previous_to_working(previous, working)
     addition_modulo_2([previous.to_base2_int, working.to_base2_int])
   end
-
-  def process(message)
-    hash_value = []
-
-    message.each_with_index do |block, index|
-      schedule = generate_schedule(block)
-
-      hash_value = initial_hash if index.zero?
-
-      working_vars = working_vars_as_current_hash_value(hash_value)
-
-      0.upto(79) do |t|
-        working_vars = update_working_vars(working_vars, schedule["t#{t}"], t)
-      end
-
-      hash_value = compute_intermediate_hash(hash_value, working_vars)
-    end
-
-    hash_value.map { |v| v.value }.join.to_i(2).to_s(16)
-  end
-
-  private
 
   def insert_sixteen_bits_of_message(block, i)
     BinaryString.new(block.chars.each_slice(32).to_a[i].join)

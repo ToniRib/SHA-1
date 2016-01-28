@@ -34,19 +34,7 @@ class BinaryStringTest < Minitest::Test
     assert_equal expected, binary_string.value
   end
 
-  def test_circular_left_shift_with_bang_shifts_value_to_left_by_n
-    binary_string = BinaryString.new('00010111')
-
-    expected = '00101110'
-    binary_string.circular_left_shift!(1)
-    assert_equal expected, binary_string.value
-
-    expected = "10111000"
-    binary_string.circular_left_shift!(2)
-    assert_equal expected, binary_string.value
-  end
-
-  def test_circular_left_shift_without_bang_shifts_value_to_left_by_n
+  def test_circular_left_shift_shifts_value_to_left_by_n
     binary_string = BinaryString.new('00010111')
 
     expected = '00101110'
