@@ -1,5 +1,4 @@
 require_relative 'binary_string'
-require 'pry'
 
 # This module contains the methods necessary to perform the logical operations
 # on various 32-bit words.
