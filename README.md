@@ -28,7 +28,7 @@ b1676709057f22073ee08832f2d91f05a90e7a0b
 
 ## Testing Suite
 
-Each class has a corresponding testing file written with [minitest](https://github.com/seattlerb/minitest) which can be run from the terminal using mrspec:
+Each class has a corresponding testing file written with [minitest](https://github.com/seattlerb/minitest) which can be run from the terminal using [mrspec]https://github.com/JoshCheek/mrspec): 
 
 ```
 $ mrspec
